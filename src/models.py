@@ -17,3 +17,78 @@ class User(db.Model):
             "email": self.email,
             # do not serialize the password, its a security breach
         }
+
+#Here we go!
+
+#esto viene del otro code:
+class FavoritePlanet(db.Model):
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+    planets_id = db.Column(db.Integer, db.ForeignKey('Planet.id'))
+   
+    def __repr__(self):
+        return '<FavoritePlanet %r>' % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            # do not serialize the password, its a security breach
+        }
+
+
+
+class FavoriteCharacter(db.Model):
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    character_id = db.Column(db.Integer, db.ForeignKey('Character.id'))
+   
+    def __repr__(self):
+        return '<FavoriteCharacter %r>' % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            # do not serialize the password, its a security breach
+        }
+
+
+class Planet(db.Model):
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(250), nullable=False)
+    diameter = db.Column(db.String(250), nullable=False)
+    weather = db.Column(db.String(250), nullable=False)
+    population = db.Column(db.String(250), nullable=False)
+    population = db.Column(db.String(250), nullable=False)
+
+    def __repr__(self):
+        return '<Planet %r>' % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            # do not serialize the password, its a security breach
+        }
+
+class Character(db.Model):
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(250), nullable=False)
+    gender = db.Column(db.String(250), nullable=False)
+    skincolor = db.Column(db.String(250), nullable=False)
+    eyecolor = db.Column(db.String(250), nullable=False)
+
+    def __repr__(self):
+        return '<Character %r>' % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            # do not serialize the password, its a security breach
+        }
