@@ -79,9 +79,54 @@ def get_singlecharacter(character_id):
     Character = Character.query.get(character_id)
     return jsonify(character.serialize()), 200
 
+#Favoritos Character y Planet
 
+@app.route('/user/<int:user_id>/favorites', methods=['GET'])
+def get_favorites(user_id):
+    # users = User.query.filter().all()
+    # User.query.filter_by(username=username).all()
+    characters = Favorite_character.query.filter_by(user_id=user_id).all()
+    planet = Favorite_planet.query.filter_by(user_id=user_id).all()
+    result = (list(map(lambda character: character.serialize(), characters)),
+        list(map(lambda planet: planet.serialize(), planet)))
+    return jsonify(result), 200
+
+@app.route('/user/<int:user_id>/favorites/characters/<int:character_id>', methods=['POST'])
+def add_favorites_characters(user_id, character_id):
+    added_characters = Favorite_character(user_id = int(user_id), character_id = int(character_id))
+    db.session.add(added_characters)
+    db.session.commit()
+    result = {"msg": "Favorito agregado"}
+    return jsonify(result), 200
+
+@app.route('/user/<int:user_id>/favorites/characters/<int:character_id>', methods=['DELETE'])
+def delete_favorite_character(user_id, character_id):
+    deleted_character = Favorite_character.query.filter_by(character_id=character_id, user_id=user_id).first()
+    db.session.delete(deleted_character)
+    db.session.commit()
+    result = {"msg": "Favorito eliminado"}
+    return jsonify(result), 200
+
+@app.route('/user/<int:user_id>/favorites/planets/<int:planets_id>', methods=['POST'])
+def add_favorites_planet(user_id, planets_id):
+    added_planet = Favorite_planet(user_id = int(user_id), planets_id = int(planets_id))
+    db.session.add(added_planet)
+    db.session.commit()
+    result = {"msg": "Favorito agregado"}
+    return jsonify(result), 200
+
+@app.route('/user/<int:user_id>/favorites/planets/<int:planets_id>', methods=['DELETE'])
+def delete_favorite_planet(user_id, planets_id):
+    deleted_planet = Favorite_planet.query.filter_by(planets_id=planets_id, user_id=user_id).first()
+    db.session.delete(deleted_planet)
+    db.session.commit()
+    result = {"msg": "Favorito eliminado"}
+    return jsonify(result), 200
+
+
+       
 
 # this only runs if `$ python src/main.py` is executed
-if __name__ == '__main__':
-    PORT = int(os.environ.get('PORT', 3000))
+    if __name__ == '__main__':
+        PORT = int(os.environ.get('PORT', 3000))
     app.run(host='0.0.0.0', port=PORT, debug=False)

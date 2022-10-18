@@ -38,7 +38,6 @@ class Favorite_planet(db.Model):
         }
 
 
-
 class Favorite_character(db.Model):
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
